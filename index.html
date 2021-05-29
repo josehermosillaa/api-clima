@@ -21,22 +21,26 @@
     <script>
 
         $(document).ready(function () {
-            $("#formulario div button").on("click", function () {
+            // $("#formulario div button").on("click", function () {
+                $('#formulario form').submit(function(){
+
+                
+
                 $("#resultado .row").empty();
                 // console.log("Prueba");
                 // let busqueda= $("#busqueda").val();
                 // console.log(busqueda);
-                //https://api.openweathermap.org/data/2.5/weather?q=London,uk&&appid=b6e3ba3bf70b3937bc327e5090f9f424
+                //https://api.openweathermap.org/data/2.5/weather?q=London,uk&lang=es&appid=b6e3ba3bf70b3937bc327e5090f9f424
                 //https://openweathermap.org/img/wn/10d@2x.png
                 let busqueda = $("#busqueda").val();
-                let urlapi =`https://api.openweathermap.org/data/2.5/weather?q=${busqueda}&units=metric&&appid=b6e3ba3bf70b3937bc327e5090f9f424`;
+                let urlapi = `https://api.openweathermap.org/data/2.5/weather?q=${busqueda}&units=metric&lang=es&appid=b6e3ba3bf70b3937bc327e5090f9f424`;
                 // console.log(urlapi);
 
                 $.get(urlapi, function (respuesta) {
                     // console.log(respuesta.weather[0].icon);
                     let icon = respuesta.weather[0].icon;
                     let temperatura = respuesta.main.temp;
-                    let tiempo = respuesta.weather[0].main;
+                    let tiempo = respuesta.weather[0].description;
                     let name = respuesta.name;
                     let lon = respuesta.coord.lon;
                     let lat = respuesta.coord.lat;
@@ -57,12 +61,12 @@
                     //     }
 
 
-                        let imgHtml = `
+                    let imgHtml = `
                             <div class="col-6">
                                 <div class="card">
                                     <img src="https://openweathermap.org/img/wn/${icon}@2x.png" class="card-img-top" alt="...">
                                     <div class="card-body">
-                                        <h5 class"card-title">${name}:${tiempo}</h5>
+                                        <h5 class"card-title">${name}: ${tiempo}</h5>
                                         <p class="card-text">
                                             <h6>La temperatura es ${temperatura} °C.</h6>
                                             <h6>Las coordenadas son: Lon: ${lon}, Lat :${lat}.</h6>
@@ -73,12 +77,12 @@
                             </div>
                             `;
 
-                        $("#resultado .row").append(imgHtml);
+                    $("#resultado .row").append(imgHtml);
                     // }
                 })
-
+                return false //asi no se actualiza la página
             })
-            
+
         })
 
     </script>
@@ -88,18 +92,19 @@
     <div class="container mt-5">
         <div class="row">
             <div id="formulario" class="col">
-                <h3>Formulario</h3>
+                <h3>Ingresa La Ciudad</h3>
                 <hr>
-
-                <div class="mb-3 row">
-                    <label for="busqueda" class="col-sm-2 col-form-label mx-2">Buscar:</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="busqueda">
+                <form action="">
+                    <div class="mb-3 row">
+                        <label for="busqueda" class="col-sm-2 col-form-label mx-2">Buscar:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="busqueda">
+                        </div>
                     </div>
-                </div>
-                <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="button">Button</button>
-                </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="submit">Buscar</button>
+                    </div>
+                </form>
             </div>
 
             <div id="resultado" class="col-sm-12 col-md-6 col-lg-9 ">
